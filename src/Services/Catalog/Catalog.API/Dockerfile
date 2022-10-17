@@ -9,8 +9,10 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["Services/Catalog/Catalog.API/Catalog.API.csproj", "Services/Catalog/Catalog.API/"]
 COPY ["Services/Catalog/Catalog.UnitTest/Catalog.UnitTest.csproj", "Services/Catalog/Catalog.UnitTest/"]
+COPY ["Services/Catalog/Catalog.IntegrationTests/Catalog.IntegrationTests.csproj", "Services/Catalog/Catalog.IntegrationTests/"]
 RUN dotnet restore "Services/Catalog/Catalog.API/Catalog.API.csproj"
 RUN dotnet restore "Services/Catalog/Catalog.UnitTest/Catalog.UnitTest.csproj"
+RUN dotnet restore "Services/Catalog/Catalog.IntegrationTests/Catalog.IntegrationTests.csproj"
 COPY . .
 WORKDIR "/src/Services/Catalog/Catalog.API"
 RUN dotnet build "Catalog.API.csproj" -c Release -o /app/build

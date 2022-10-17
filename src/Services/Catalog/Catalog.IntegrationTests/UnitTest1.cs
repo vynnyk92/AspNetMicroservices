@@ -2,6 +2,7 @@ using System.Net;
 using System.Runtime.Intrinsics;
 using Catalog.IntegrationTests.Infrastructure;
 using Shouldly;
+using Xunit.Abstractions;
 
 namespace Catalog.IntegrationTests
 {
@@ -9,10 +10,12 @@ namespace Catalog.IntegrationTests
     public class UnitTest1 
     {
         private readonly TestFixture _fixture;
+        private readonly ITestOutputHelper output;
 
-        public UnitTest1(TestFixture fixture)
+        public UnitTest1(TestFixture fixture, ITestOutputHelper output)
         {
             _fixture = fixture;
+            this.output = output;
         }
 
         [Fact]
@@ -25,7 +28,8 @@ namespace Catalog.IntegrationTests
             var response = await client.GetAsync("/api/v1/Catalog");
 
             //Assert
-            response.StatusCode.ShouldBe(HttpStatusCode.OK);
+            output.WriteLine(response.StatusCode.ToString());
+            response.StatusCode.ShouldBe(HttpStatusCode.Ambiguous);
         }
     }
 }
