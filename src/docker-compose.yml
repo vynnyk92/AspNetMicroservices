@@ -41,6 +41,33 @@ services:
    networks:
      - aspnet-services
 
+  basketdb:
+    image: redis
+    container_name: basketdb
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - aspnet-services
+
+  basket.api:
+   image: ${DOCKER_REGISTRY-}basketapi
+   container_name: basket.api
+   build:
+     context: .
+     dockerfile: Services/Basket/Basket.Api/Dockerfile
+   ports:
+     - "8002:80"
+     - "8003:443"
+   depends_on:
+     - "catalogdb"
+   environment:
+     - ASPNETCORE_ENVIRONMENT=Development
+     - ASPNETCORE_URLS=http://+:80
+     - "InMemoryCacheAddress=basketdb:6379"
+   networks:
+     - aspnet-services
+
 networks:
   aspnet-services:
     driver: bridge
