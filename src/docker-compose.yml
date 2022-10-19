@@ -68,9 +68,34 @@ services:
    networks:
      - aspnet-services
 
+  discountdb:
+    image: postgres
+    container_name: discountdb
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin1234
+      - POSTGRES_DB=DiscountDb
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgress_data:/var/lib/postgresql/data/
+  discountdbui:
+    image: dpage/pgadmin4
+    container_name: discountdbui
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@aspnetrun.com
+      - PGADMIN_DEFAULT_PASSWORD=admin1234
+    restart: always
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/root/.pgadmin
 networks:
   aspnet-services:
     driver: bridge
 
 volumes:
   mongo_data:
+  postgress_data:
+  pgadmin_data:
