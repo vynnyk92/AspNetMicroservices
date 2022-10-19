@@ -1,3 +1,5 @@
+using Discount.Api.Repositories;
+
 namespace Discount.Api
 {
     public class Program
@@ -7,8 +9,10 @@ namespace Discount.Api
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
+            var conf = 
             builder.Services.AddControllers();
+            builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection(nameof(DatabaseSettings)));
+            builder.Services.AddSingleton<IDiscountRepository, DiscountRepository>();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
